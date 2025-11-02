@@ -74,7 +74,6 @@ class _ContactPageState extends State<ContactPage> {
           _showSnackBar('Message sent successfully!');
           _clearForm();
         } else {
-          print(_nameController.text);
           _showSnackBar('Failed to send message. Please try again.');
         }
       } catch (e) {
