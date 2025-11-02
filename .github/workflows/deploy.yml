@@ -19,6 +19,12 @@ jobs:
       - name: Get dependencies
         run: flutter pub get
 
+      - name: Create .env file
+        run: |
+            echo "USER_ID=${{ secrets.USER_ID }}" > .env
+            echo "SERVICE_ID=${{ secrets.SERVICE_ID }}" >> .env
+            echo "TEMPLATE_ID=${{ secrets.TEMPLATE_ID }}" >> .env
+
       - name: Build Flutter web
         run: flutter build web --release --base-href "/habeeb_portfolio/"
 
