@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:url_launcher/url_launcher.dart';
-
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 import '../widgets/animated_section.dart';
 
 class ContactPage extends StatefulWidget {
@@ -26,34 +29,67 @@ class _ContactPageState extends State<ContactPage> {
     super.dispose();
   }
 
-  Future<void> _sendEmail() async {
-    if (!_formKey.currentState!.validate()) {
-      return;
-    }
+  bool _isLoading = false;
 
-    final name = _nameController.text.trim();
-    final email = _emailController.text.trim();
-    final message = _messageController.text.trim();
-
-    final subject = 'Portfolio Contact: $name';
-    final body = 'Name: $name\nEmail: $email\n\nMessage:\n$message';
-
-    final uri = Uri(
-      scheme: 'mailto',
-      path: 'habibkhantz24@gmail.com',
-      queryParameters: {
-        'subject': subject,
-        'body': body,
-      },
+  void _showSnackBar(String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(message),
+        backgroundColor: message.contains('success') ? Colors.green : Colors.red,
+      ),
     );
+  }
 
-    if (await canLaunchUrl(uri)) {
-      await launchUrl(uri);
-      // Clear form after successful launch
-      _clearForm();
-    } else {
-      _showSnackBar('Could not launch email client', Colors.red);
+
+  final String? _userId = dotenv.env['USER_ID'];
+  final String? _serviceId = dotenv.env['SERVICE_ID'];
+  final String? _templateId = dotenv.env['TEMPLATE_ID'];
+
+  Future<void> _sendEmail() async {
+    if (_formKey.currentState!.validate()) {
+      setState(() {
+        _isLoading = true;
+      });
+
+      try {
+        final response = await http.post(
+          Uri.parse('https://api.emailjs.com/api/v1.0/email/send'),
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: json.encode({
+            'service_id': _serviceId,
+            'template_id': _templateId,
+            'user_id': _userId,
+            'template_params': {
+              'name': _nameController.text,
+              'email': _emailController.text,
+              'message': _messageController.text,
+              'to_email': 'habibkhantz24@gmail.com',
+            }
+          }),
+        );
+
+        if (response.statusCode == 200) {
+          _showSnackBar('Message sent successfully!');
+          _clearForm();
+        } else {
+          _showSnackBar('Failed to send message. Please try again.');
+        }
+      } catch (e) {
+        _showSnackBar('Error: $e');
+      } finally {
+        setState(() {
+          _isLoading = false;
+        });
+      }
     }
+  }
+
+  String? encodeQueryParameters(Map<String, String> params) {
+    return params.entries
+        .map((e) => '${Uri.encodeComponent(e.key)}=${Uri.encodeComponent(e.value)}')
+        .join('&');
   }
 
   void _clearForm() {
@@ -62,15 +98,6 @@ class _ContactPageState extends State<ContactPage> {
     _messageController.clear();
   }
 
-  void _showSnackBar(String message, Color backgroundColor) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(message),
-        backgroundColor: backgroundColor,
-        duration: const Duration(seconds: 3),
-      ),
-    );
-  }
 
   String? _validateEmail(String? value) {
     if (value == null || value.isEmpty) {
@@ -148,7 +175,6 @@ class _ContactPageState extends State<ContactPage> {
       child: Form(
         key: _formKey,
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             TextFormField(
               controller: _nameController,
@@ -224,21 +250,27 @@ class _ContactPageState extends State<ContactPage> {
               validator: (value) => _validateRequired(value, 'message'),
             ),
             const SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: _sendEmail,
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.blue,
-                foregroundColor: Colors.white,
-                padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8),
-                ),
-              ),
-              child: const Text(
-                'Send Message',
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
-              ),
-            ),
+                      ElevatedButton(
+            onPressed: _isLoading ? null : _sendEmail,
+            child: _isLoading
+                ? CircularProgressIndicator()
+                : Text('Send Message'),
+          ),
+            // ElevatedButton(
+            //   onPressed: _sendEmail,
+            //   style: ElevatedButton.styleFrom(
+            //     backgroundColor: Colors.blue,
+            //     foregroundColor: Colors.white,
+            //     padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
+            //     shape: RoundedRectangleBorder(
+            //       borderRadius: BorderRadius.circular(8),
+            //     ),
+            //   ),
+            //   child: const Text(
+            //     'Send Message',
+            //     style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+            //   ),
+            // ),
           ],
         ),
       ),
@@ -250,7 +282,7 @@ class _ContactPageState extends State<ContactPage> {
     if (await canLaunchUrl(uri)) {
       await launchUrl(uri);
     } else {
-      _showSnackBar('Could not launch email client', Colors.red);
+      _showSnackBar('Could not launch email client');
     }
   }
 
@@ -259,17 +291,16 @@ class _ContactPageState extends State<ContactPage> {
     if (await canLaunchUrl(uri)) {
       await launchUrl(uri);
     } else {
-      _showSnackBar('Could not launch phone app', Colors.red);
+      _showSnackBar('Could not launch phone app');
     }
   }
 
   Future<void> _launchMaps() async {
-    // Replace with your actual address
     final uri = Uri.parse('https://maps.google.com/?q=Maharashtra');
     if (await canLaunchUrl(uri)) {
       await launchUrl(uri);
     } else {
-      _showSnackBar('Could not launch maps', Colors.red);
+      _showSnackBar('Could not launch maps');
     }
   }
 }
@@ -314,3 +345,119 @@ class _ContactInfo extends StatelessWidget {
   }
 }
 
+
+
+// class ContactForm extends StatefulWidget {
+//   const ContactForm({super.key});
+//
+//   @override
+//   _ContactFormState createState() => _ContactFormState();
+// }
+//
+// class _ContactFormState extends State<ContactForm> {
+//   final _formKey = GlobalKey<FormState>();
+//   final TextEditingController _nameController = TextEditingController();
+//   final TextEditingController _emailController = TextEditingController();
+//   final TextEditingController _messageController = TextEditingController();
+//
+//   bool _isLoading = false;
+//
+//   final String _serviceId = 'service_xxxxx';
+//   final String _templateId = 'template_xxxxx';
+//   final String _userId = 'user_xxxxx_xxxxx'; // Your public key
+//
+//   Future<void> _sendEmail() async {
+//     if (_formKey.currentState!.validate()) {
+//       setState(() {
+//         _isLoading = true;
+//       });
+//
+//       try {
+//         final response = await http.post(
+//           Uri.parse('https://api.emailjs.com/api/v1.0/email/send'),
+//           headers: {
+//             'Content-Type': 'application/json',
+//           },
+//           body: json.encode({
+//             'service_id': _serviceId,
+//             'template_id': _templateId,
+//             'user_id': _userId,
+//             'template_params': {
+//               'from_name': _nameController.text,
+//               'from_email': _emailController.text,
+//               'message': _messageController.text,
+//               'to_email': 'your-email@gmail.com', // Your receiving email
+//             }
+//           }),
+//         );
+//
+//         if (response.statusCode == 200) {
+//           _showSnackBar('Message sent successfully!');
+//           _clearForm();
+//         } else {
+//           _showSnackBar('Failed to send message. Please try again.');
+//         }
+//       } catch (e) {
+//         _showSnackBar('Error: $e');
+//       } finally {
+//         setState(() {
+//           _isLoading = false;
+//         });
+//       }
+//     }
+//   }
+//
+//   void _clearForm() {
+//     _nameController.clear();
+//     _emailController.clear();
+//     _messageController.clear();
+//   }
+//
+//   void _showSnackBar(String message) {
+//     ScaffoldMessenger.of(context).showSnackBar(
+//       SnackBar(
+//         content: Text(message),
+//         backgroundColor: message.contains('success') ? Colors.green : Colors.red,
+//       ),
+//     );
+//   }
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return Form(
+//       key: _formKey,
+//       child: Column(
+//         children: [
+//           TextFormField(
+//             controller: _nameController,
+//             decoration: InputDecoration(labelText: 'Name'),
+//             validator: (value) => value!.isEmpty ? 'Please enter your name' : null,
+//           ),
+//           SizedBox(height: 16),
+//           TextFormField(
+//             controller: _emailController,
+//             decoration: InputDecoration(labelText: 'Email'),
+//             validator: (value) => value!.isEmpty || !value.contains('@')
+//                 ? 'Please enter a valid email'
+//                 : null,
+//           ),
+//           SizedBox(height: 16),
+//           TextFormField(
+//             controller: _messageController,
+//             decoration: InputDecoration(labelText: 'Message'),
+//             maxLines: 5,
+//             validator: (value) => value!.isEmpty ? 'Please enter your message' : null,
+//           ),
+//           SizedBox(height: 20),
+//           ElevatedButton(
+//             onPressed: _isLoading ? null : _sendEmail,
+//             child: _isLoading
+//                 ? CircularProgressIndicator()
+//                 : Text('Send Message'),
+//           ),
+//         ],
+//       ),
+//     );
+//   }
+// }
+//

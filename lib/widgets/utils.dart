@@ -2,7 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:habeeb_portfolio/core/colors.dart';
 import 'package:habeeb_portfolio/widgets/extension.dart';
 
-ShaderMask appShaderMask(BuildContext context, String text) {
+ShaderMask appShaderMask({
+  required BuildContext context,
+  required String text,
+  double? fontSize
+}) {
   return ShaderMask(
     shaderCallback: (bounds) => const LinearGradient(
       colors: [
@@ -18,7 +22,7 @@ ShaderMask appShaderMask(BuildContext context, String text) {
       style: context.textTheme.headlineMedium!.copyWith(
         color: Color(0xFFAE0CA7),
         fontWeight: FontWeight.bold,
-        fontSize: 40,
+        fontSize: fontSize ?? 40,
       ),
     ),
   );

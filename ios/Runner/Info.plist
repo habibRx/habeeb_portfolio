@@ -45,5 +45,22 @@
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
+
+	<key>LSApplicationQueriesSchemes</key>
+        <array>
+            <string>mailto</string>
+            <string>tel</string>
+            <string>telprompt</string>
+            <string>maps</string>
+            <string>comgooglemaps</string>
+            <string>comgooglemaps-x-callback</string>
+            <string>apple-maps</string>
+            <string>http</string>
+            <string>https</string>
+        </array>
+
+        <key>NSPhotoLibraryUsageDescription</key>
+        <string>This app needs access to photos to attach images to emails</string>
+
 </dict>
 </plist>
