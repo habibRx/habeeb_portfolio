@@ -302,7 +302,10 @@ class _HomePageState extends State<HomePage> {
                 "I am proficient in integrating third-party APIs, Firebase services, and local databases, ensuring seamless app functionality. I continuously explore new technologies, tools, and best practices to keep my applications modern and efficient."
                 "I take pride in writing clean, maintainable code and following industry-standard architecture patterns. My focus is on delivering apps that not only meet business requirements but also delight users with smooth interactions and responsive design."
                 "Collaboration is one of my strengths; I enjoy working closely with designers, backend developers, and stakeholders to bring ideas to life. My goal is to contribute to impactful projects while constantly learning and growing as a software developer.",
-            style: UIHelpers.titleLarge(context),
+            style: isMobile ? context.textTheme.bodyMedium?.copyWith(
+              color: Colors.white70,
+              fontSize: 16,
+            ): UIHelpers.titleLarge(context),
             textAlign: TextAlign.center,
           ),
           UIHelpers.verticalSpace(40),

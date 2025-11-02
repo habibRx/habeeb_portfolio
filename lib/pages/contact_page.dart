@@ -74,10 +74,11 @@ class _ContactPageState extends State<ContactPage> {
           _showSnackBar('Message sent successfully!');
           _clearForm();
         } else {
+          print(_nameController.text);
           _showSnackBar('Failed to send message. Please try again.');
         }
       } catch (e) {
-        _showSnackBar('Error: $e');
+        print('Error: $e');
       } finally {
         setState(() {
           _isLoading = false;
@@ -160,6 +161,13 @@ class _ContactPageState extends State<ContactPage> {
                   text: 'Maharashtra, INDIA',
                   onTap: () => _launchMaps(),
                 ),
+
+                if (widget.isMobile == true)
+                 SingleChildScrollView(
+                   child:  _buildMobileContactForm(),
+                 )
+                // if (widget.isMobile) _buildContactForm(),
+
               ],
             ),
           ),
@@ -274,6 +282,112 @@ class _ContactPageState extends State<ContactPage> {
           ],
         ),
       ),
+    );
+  }
+
+  Widget _buildMobileContactForm() {
+    return  Form(
+        key: _formKey,
+        child: Column(
+          children: [
+            TextFormField(
+              controller: _nameController,
+              style: const TextStyle(color: Colors.white),
+              decoration: InputDecoration(
+                labelText: 'Your Name',
+                labelStyle: const TextStyle(color: Colors.white70),
+                border: const OutlineInputBorder(),
+                enabledBorder: const OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.white54),
+                ),
+                focusedBorder: const OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.white),
+                ),
+                errorBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.orange.shade300),
+                ),
+                focusedErrorBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.orange.shade400),
+                ),
+                errorStyle: TextStyle(color: Colors.orange.shade300),
+              ),
+              validator: (value) => _validateRequired(value, 'name'),
+            ),
+            const SizedBox(height: 16),
+            TextFormField(
+              controller: _emailController,
+              style: const TextStyle(color: Colors.white),
+              keyboardType: TextInputType.emailAddress,
+              decoration: InputDecoration(
+                labelText: 'Your Email',
+                labelStyle: const TextStyle(color: Colors.white70),
+                border: const OutlineInputBorder(),
+                enabledBorder: const OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.white54),
+                ),
+                focusedBorder: const OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.white),
+                ),
+                errorBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.orange.shade300),
+                ),
+                focusedErrorBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.orange.shade400),
+                ),
+                errorStyle: TextStyle(color: Colors.orange.shade300),
+              ),
+              validator: _validateEmail,
+            ),
+            const SizedBox(height: 16),
+            TextFormField(
+              controller: _messageController,
+              style: const TextStyle(color: Colors.white),
+              maxLines: 4,
+              decoration: InputDecoration(
+                labelText: 'Message',
+                labelStyle: const TextStyle(color: Colors.white70),
+                border: const OutlineInputBorder(),
+                enabledBorder: const OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.white54),
+                ),
+                focusedBorder: const OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.white),
+                ),
+                errorBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.orange.shade300),
+                ),
+                focusedErrorBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.orange.shade400),
+                ),
+                errorStyle: TextStyle(color: Colors.orange.shade300),
+              ),
+              validator: (value) => _validateRequired(value, 'message'),
+            ),
+            const SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: _isLoading ? null : _sendEmail,
+              child: _isLoading
+                  ? CircularProgressIndicator()
+                  : Text('Send Message'),
+            ),
+            // ElevatedButton(
+            //   onPressed: _sendEmail,
+            //   style: ElevatedButton.styleFrom(
+            //     backgroundColor: Colors.blue,
+            //     foregroundColor: Colors.white,
+            //     padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
+            //     shape: RoundedRectangleBorder(
+            //       borderRadius: BorderRadius.circular(8),
+            //     ),
+            //   ),
+            //   child: const Text(
+            //     'Send Message',
+            //     style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+            //   ),
+            // ),
+          ],
+        ),
+
     );
   }
 
