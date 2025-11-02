@@ -1,11 +1,12 @@
 // helpers/ui_helpers.dart
 import 'package:flutter/material.dart';
+import 'package:habeeb_portfolio/widgets/extension.dart';
 
 class UIHelpers {
   // Text styles
   static TextStyle displayLarge(BuildContext context, {bool isMobile = false}) {
     return Theme.of(context).textTheme.displayLarge!.copyWith(
-      fontSize: isMobile ? 40 : 60,
+      fontSize: isMobile ? context.viewSize.width*.1 : context.viewSize.width*.05,
       fontWeight: FontWeight.bold,
       color: Colors.white,
     );
@@ -20,7 +21,7 @@ class UIHelpers {
 
   static TextStyle bodyLarge(BuildContext context, {bool isMobile = false}) {
     return Theme.of(context).textTheme.bodyLarge!.copyWith(
-      fontSize: isMobile ? 16 : 18,
+      fontSize: isMobile ? context.viewSize.width*.05 : context.viewSize.width*.02,
       color: Colors.white,
       height: 1.5,
     );

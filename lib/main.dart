@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'core/theme.dart';
 import 'core/router.dart';
 
@@ -17,6 +16,21 @@ class MyApp extends StatelessWidget {
       theme: appTheme,
       routerConfig: goRouter,
       debugShowCheckedModeBanner: false,
+      builder: (context, child) => LayoutBuilder(
+        builder: (context, constraints) {
+          return MediaQuery(
+            data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
+            child: child!,
+          );
+        },
+      ),
     );
+
+    // MaterialApp.router(
+    //   title: 'My Portfolio',
+    //   theme: appTheme,
+    //   routerConfig: goRouter,
+    //   debugShowCheckedModeBanner: false,
+    // );
   }
 }

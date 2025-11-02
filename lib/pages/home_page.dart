@@ -45,10 +45,15 @@ class _HomePageState extends State<HomePage> {
           ),
 
           // Hero Section
+          if (!isMobile)
           SliverToBoxAdapter(
             child: _buildHeroSection(isMobile, context),
           ),
 
+          if (isMobile)
+            SliverToBoxAdapter(
+              child: _buildMobileHero( context),
+            ),
           // About Section
           SliverToBoxAdapter(
             key: _aboutKey,
@@ -114,62 +119,139 @@ class _HomePageState extends State<HomePage> {
     return Container(
       height: MediaQuery.of(context).size.height,
       padding: UIHelpers.sectionPadding(isMobile),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Expanded(
-            child: AnimatedSection(
-              delay: 200,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Hi, I\'m Habeeb',
-                    style: UIHelpers.displayLarge(context, isMobile: isMobile),
-                  ),
-                  UIHelpers.verticalSpace(10),
-                  appShaderMask(context, "Front-End Developer"),
-                  UIHelpers.verticalSpace(30),
-                  SizedBox(
-                    width: isMobile ? double.infinity : 500,
-                    child: Text(
-                      'I create elegant, responsive cross-platform applications '
-                          'using Flutter with focus on performance and user experience.',
-                      style: UIHelpers.bodyLarge(context, isMobile: isMobile),
-                      textAlign: isMobile ? TextAlign.center : TextAlign.left,
+      child: SingleChildScrollView(
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Expanded(
+              child: AnimatedSection(
+                delay: 200,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Hi, I\'m Habeeb',
+                      style: UIHelpers.displayLarge(context, isMobile: isMobile),
                     ),
-                  ),
-                  UIHelpers.verticalSpace(40),
-                  ElevatedButton(
-                    onPressed: () => _scrollToSection('About'),
-                    style: UIHelpers.elevatedButtonStyle(),
-                    child: const Text('About Me'),
-                  ),
-                ],
-              ),
-            ),
-          ),
-          if (!isMobile)
-            AnimatedSection(
-              delay: 400,
-              child: Container(
-                margin: const EdgeInsets.only(right: 100),
-                child: CircleAvatar(
-                  radius: 200,
-                  backgroundColor: Colors.blue.shade100,
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(250),
-                    child: Image.asset('assets/images/header.jpg'),
-                  ),
+                    UIHelpers.verticalSpace(context.viewSize.height*.01),
+                    appShaderMask(context, "Front-End Developer"),
+                    UIHelpers.verticalSpace(context.viewSize.height*.01),
+                    SizedBox(
+                      width: isMobile ? context.viewSize.width : context.viewSize.width*.5,
+                      child: Text(
+                        'I create elegant, responsive cross-platform applications '
+                            'using Flutter with focus on performance and user experience.',
+                        style: UIHelpers.bodyLarge(context, isMobile: isMobile),
+                        textAlign: isMobile ? TextAlign.center : TextAlign.left,
+                      ),
+                    ),
+                    UIHelpers.verticalSpace(context.viewSize.height*.05),
+                    if(!isMobile)
+                      ElevatedButton(
+                        onPressed: () => _scrollToSection('About'),
+                        style: UIHelpers.elevatedButtonStyle(),
+                        child: const Text('About Me'),
+                      ),
+                  ],
                 ),
               ),
             ),
-        ],
+            if (!isMobile)
+              Expanded(child: AnimatedSection(
+                delay: 400,
+                child: Container(
+                  margin:  EdgeInsets.only(right: context.viewSize.height*.01),
+                  child: CircleAvatar(
+                    radius: context.viewSize.width*.12,
+                    backgroundColor: Colors.blue.shade100,
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(context.viewSize.width*.12,),
+                      child: Image.asset('assets/images/header.jpg'),
+                    ),
+                  ),
+                ),
+              ),)
+          ],
+        ),
       ),
     );
   }
+
+  Widget _buildMobileHero( BuildContext context) {
+    return SizedBox(
+      height: context.viewSize.height,
+      child: SingleChildScrollView(
+        child:  Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              AnimatedSection(
+                delay: 400,
+                child: Container(
+                  margin:  EdgeInsets.only(right: context.viewSize.height*.01),
+                  child: CircleAvatar(
+                    radius: context.viewSize.width*.12,
+                    backgroundColor: Colors.blue.shade100,
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(context.viewSize.width*.12,),
+                      child: Image.asset('assets/images/header.jpg'),
+                    ),
+                  ),
+                ),
+              ),
+
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Expanded(
+                    child: AnimatedSection(
+                      delay: 200,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Hi, I\'m Habeeb',
+                            style: context.textTheme.titleLarge!.copyWith(
+color: Colors.white
+                            ),
+                          ),
+                          UIHelpers.verticalSpace(context.viewSize.height*.01),
+                          appShaderMask(context, "Front-End Developer"),
+                          UIHelpers.verticalSpace(context.viewSize.height*.01),
+                          SizedBox(
+                            width: context.viewSize.width,
+                            child: Text(
+                              'I create elegant, responsive cross-platform applications '
+                                  'using Flutter with focus on performance and user experience.',
+                              style: context.textTheme.bodyMedium!.copyWith(
+                                  color: Colors.white
+
+                              ),
+                              // textAlign: isMobile ? TextAlign.center : TextAlign.left,
+                            ),
+                          ),
+                          UIHelpers.verticalSpace(context.viewSize.height*.05),
+                          // if(!isMobile)
+                          ElevatedButton(
+                            onPressed: () => _scrollToSection('About'),
+                            style: UIHelpers.elevatedButtonStyle(),
+                            child: const Text('About Me'),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ]
+        ),
+      ),
+    );
+  }
+
 
   Widget _buildAboutSection(bool isMobile, BuildContext context) {
     return Container(
@@ -232,18 +314,21 @@ class _HomePageState extends State<HomePage> {
       ) {
     final List<Map<String, String>> projects = [
       {
+        "link" : "https://ecomoto-mu.vercel.app",
         "name": "ECOMOTO",
         "image": "assets/images/ecomoto.png",
         "description":
         "A peer-to-peer EV rental marketplace with integrated social features, enabling users to rent electric vehicles, connect with owners, and engage through real-time chat and community interactions.",
       },
       {
+        "link" : "https://play.google.com/store/apps/details?id=com.orokii.app&hl=en&gl=US",
         "name": "OROKII",
         "image": "assets/images/orokii.png",
         "description":
         "A decentralized finance platform focused on enabling fast, secure, and borderless crypto transactions with minimal fees.",
       },
       {
+        "link" : "https://ecomoto-mu.vercel.app",
         "name": "ECOBOOK",
         "image": "assets/images/ecomoto.png",
         "description":
@@ -251,6 +336,7 @@ class _HomePageState extends State<HomePage> {
       },
 
       {
+        "link" : "",
         "name": "What's My PNL",
         "image": "assets/images/whatpnl.jpg",
         "description":
@@ -275,7 +361,8 @@ class _HomePageState extends State<HomePage> {
               child: appShaderMask(context, "Projects"),
             ),
           ),
-          const SizedBox(height: 40),
+
+           SizedBox(height: context.viewSize.height*.05),
 
           Expanded(
             child: Stack(
@@ -294,6 +381,7 @@ class _HomePageState extends State<HomePage> {
                         child: Center (child : FeaturedProject(
                           projectName: project["name"]!,
                           projectImage: project["image"]!,
+                          projectLink: project["link"] ?? "",
                           projectDescription: project["description"]!,
                         )
                         ));
@@ -301,7 +389,7 @@ class _HomePageState extends State<HomePage> {
                 ),
 
                 // Left Navigation Arrow
-                if (projects.length > 1)
+                if (projects.length > 1 && !isMobile)
                   Positioned(
                     left: 0,
                     child: IconButton(
@@ -321,7 +409,7 @@ class _HomePageState extends State<HomePage> {
                     ),
                   ),
 
-                if (projects.length > 1)
+                if (projects.length > 1 && !isMobile)
                   Positioned(
                     right: 0,
                     child: IconButton(
@@ -379,6 +467,7 @@ class _HomePageState extends State<HomePage> {
 
   Widget _buildContactSection(bool isMobile, BuildContext context) {
     return Container(
+      height: MediaQuery.of(context).size.height,
       padding: UIHelpers.sectionPadding(isMobile),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
