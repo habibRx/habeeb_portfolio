@@ -164,7 +164,11 @@ class _ContactPageState extends State<ContactPage> {
                 if (widget.isMobile == true)
                  SingleChildScrollView(
                    child:  _buildMobileContactForm(),
-                 )
+                 ),
+
+                if (widget.isMobile == true)
+                  const SizedBox(width: 60),
+
                 // if (widget.isMobile) _buildContactForm(),
 
               ],
