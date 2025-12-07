@@ -1,5 +1,6 @@
 // helpers/ui_helpers.dart
 import 'package:flutter/material.dart';
+import 'package:habeeb_portfolio/core/colors.dart';
 import 'package:habeeb_portfolio/widgets/extension.dart';
 
 class UIHelpers {
@@ -29,23 +30,20 @@ class UIHelpers {
 
   static TextStyle titleLarge(BuildContext context) {
     return Theme.of(context).textTheme.titleLarge!.copyWith(
-      color: Colors.white70,
+      color: AppColors.buttonColorLight,
+      fontSize: context.viewSize.height * 0.03,
       height: 1.6,
     );
   }
 
   // Shader mask for section titles
   static Widget sectionTitle(BuildContext context, String text) {
-    return ShaderMask(
-      shaderCallback: (bounds) => LinearGradient(
-        colors: [Colors.blue.shade400, Colors.purple.shade400],
-      ).createShader(bounds),
-      child: Text(
-        text,
-        style: headlineSmall(context).copyWith(
-          fontSize: 36,
-          fontWeight: FontWeight.bold,
-        ),
+    return Text(
+      text,
+      style: headlineSmall(context).copyWith(
+        fontSize: context.viewSize.height * 0.08,
+        color: AppColors.titleColor,
+        fontWeight: FontWeight.bold,
       ),
     );
   }

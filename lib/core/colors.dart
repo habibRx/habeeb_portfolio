@@ -7,8 +7,10 @@ class AppColors{
 
   static const primary = Color(0xFF292F36);
   static const buttonColor = Color(0xFF12F7D6);
-  static const background1 = Color(0xFF251C31);
+  static const background1 = Color(0xFF171717);
 
+  static const titleColor = Color(0xFFFD853A);
+  static const headlineColor = Color(0xFF344054);
   static const redirectColor = Color(0xFF2FF77A);
   static const background2 = Color(0xFF1A1E23);
   static const buttonColorLight = Color(0xFF98FAEC);

@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:habeeb_portfolio/pages/contact_page.dart';
+import 'package:habeeb_portfolio/pages/experience.dart';
+import 'package:habeeb_portfolio/pages/services.dart';
 import 'package:habeeb_portfolio/widgets/extension.dart';
 import 'package:habeeb_portfolio/widgets/project_card.dart';
 import 'package:habeeb_portfolio/widgets/utils.dart';
+import '../core/colors.dart';
 import '../widgets/nav_bar.dart';
 import '../widgets/animated_section.dart';
 import '../widgets/ui_helper.dart';
+import 'about_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -19,6 +23,8 @@ class _HomePageState extends State<HomePage> {
   final GlobalKey _aboutKey = GlobalKey();
   final GlobalKey _projectsKey = GlobalKey();
   final GlobalKey _contactKey = GlobalKey();
+  final GlobalKey _experienceKey = GlobalKey();
+  final GlobalKey _serviceKey = GlobalKey();
 
   // Moved constants to class level for better performance
   static const _avatarData = [
@@ -39,28 +45,29 @@ class _HomePageState extends State<HomePage> {
       "name": "ECOMOTO",
       "image": "assets/images/ecomoto.png",
       "description":
-      "A peer-to-peer EV rental marketplace with integrated social features, enabling users to rent electric vehicles, connect with owners, and engage through real-time chat and community interactions.",
+          "A peer-to-peer EV rental marketplace with integrated social features, enabling users to rent electric vehicles, connect with owners, and engage through real-time chat and community interactions.",
     },
     {
-      "link": "https://play.google.com/store/apps/details?id=com.orokii.app&hl=en&gl=US",
+      "link":
+          "https://play.google.com/store/apps/details?id=com.orokii.app&hl=en&gl=US",
       "name": "OROKII",
       "image": "assets/images/orokii.png",
       "description":
-      "A decentralized finance platform focused on enabling fast, secure, and borderless crypto transactions with minimal fees.",
+          "A decentralized finance platform focused on enabling fast, secure, and borderless crypto transactions with minimal fees.",
     },
     {
       "link": "https://ecomoto-mu.vercel.app",
       "name": "ECOBOOK",
       "image": "assets/images/ecomoto.png",
       "description":
-      "A social platform built to connect eco-conscious individuals and businesses through blogs, events, and community discussions.",
+          "A social platform built to connect eco-conscious individuals and businesses through blogs, events, and community discussions.",
     },
     {
       "link": "",
       "name": "What's My PNL",
       "image": "assets/images/whatpnl.jpg",
       "description":
-      "A comprehensive trading journal that helps traders record, analyze, and optimize their performance with built-in brokerage and gain calculators, insightful reports, and smart trade tracking tools.",
+          "A comprehensive trading journal that helps traders record, analyze, and optimize their performance with built-in brokerage and gain calculators, insightful reports, and smart trade tracking tools.",
     },
   ];
 
@@ -70,28 +77,41 @@ class _HomePageState extends State<HomePage> {
     final isMobile = screenWidth < 600;
 
     return Scaffold(
-      backgroundColor: const Color(0xFF120627),
+      backgroundColor: AppColors.background1,
       body: CustomScrollView(
         controller: _scrollController,
         slivers: [
           SliverAppBar(
-            backgroundColor: const Color(0xFF120627),
             floating: true,
+            backgroundColor: AppColors.background1,
+            surfaceTintColor: Colors.transparent,
             pinned: true,
-            elevation: 0,
-            title: NavBar(
-              onSectionTap: _scrollToSection,
-            ),
+            elevation: 1,
+            toolbarHeight: 80,
+
+            title: NavBar(onSectionTap: _scrollToSection).withHorViewPadding,
           ),
           // Hero Section
           if (!isMobile)
             SliverToBoxAdapter(child: _buildHeroSection(isMobile, context)),
-          if (isMobile)
-            SliverToBoxAdapter(child: _buildMobileHero(context)),
+
+
+
+          if (isMobile) SliverToBoxAdapter(child: AnimatedHeroSection(isMobile: true,)),
+
+          SliverToBoxAdapter(
+            key: _serviceKey,
+            child: ServicesSection(),
+          ),
           // About Section
           SliverToBoxAdapter(
             key: _aboutKey,
             child: _buildAboutSection(isMobile, context),
+          ),
+
+          SliverToBoxAdapter(
+            key: _experienceKey,
+            child: WorkExperienceScreen(),
           ),
           // Projects Section
           SliverToBoxAdapter(
@@ -121,6 +141,12 @@ class _HomePageState extends State<HomePage> {
       case 'Contact':
         targetKey = _contactKey;
         break;
+      case "Experience":
+        targetKey = _experienceKey;
+        break;
+      case "Services":
+        targetKey = _serviceKey;
+        break;
     }
 
     if (targetKey?.currentContext != null) {
@@ -138,75 +164,175 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
-  Widget _buildHeroSection(bool isMobile, BuildContext context) {
-    final size = MediaQuery.of(context).size;
+  // Widget _buildHeroSection(bool isMobile, BuildContext context) {
+  //   final size = MediaQuery.of(context).size;
+  //
+  //   return Container(
+  //     height: size.height,
+  //     padding: UIHelpers.sectionPadding(isMobile),
+  //     child: Row(
+  //       mainAxisAlignment: MainAxisAlignment.spaceAround,
+  //       crossAxisAlignment: CrossAxisAlignment.center,
+  //       children: [
+  //         Flexible(
+  //           child: Column(
+  //             mainAxisAlignment: MainAxisAlignment.center,
+  //             children: [
+  //               Text(
+  //                 "5+",
+  //                 style: TextStyle(
+  //                   fontSize: isMobile ? 32 : 48,
+  //                   fontWeight: FontWeight.bold,
+  //                   color: AppColors.titleColor,
+  //                 ),
+  //               ),
+  //               Text(
+  //                 "Projects Completed",
+  //                 style: TextStyle(
+  //                   fontSize: isMobile ? 14 : 16,
+  //                   color: AppColors.buttonColorLight,
+  //                   fontWeight: FontWeight.w500,
+  //                 ),
+  //                 textAlign: TextAlign.center,
+  //               ),
+  //             ],
+  //           ),
+  //         ),
+  //
+  //         Flexible(
+  //           flex: 2,
+  //           child: Stack(
+  //             alignment: Alignment.center,
+  //             clipBehavior: Clip.none,
+  //             children: [
+  //               // Orange half circle
+  //               Positioned(
+  //                 bottom: 0,
+  //                 child: Container(
+  //                   width: 500,
+  //                   height: 250,
+  //                   decoration: const BoxDecoration(
+  //                     color: AppColors.buttonColorLight,
+  //                     borderRadius: BorderRadius.only(
+  //                       topLeft: Radius.circular(250),
+  //                       topRight: Radius.circular(250),
+  //                     ),
+  //                   ),
+  //                 ),
+  //               ),
+  //
+  //               Positioned(
+  //                 top: 20,
+  //                 child: Column(
+  //                   mainAxisSize: MainAxisSize.min,
+  //                   children: [
+  //                     // Hello bubble
+  //                     Container(
+  //                       padding: const EdgeInsets.symmetric(
+  //                         horizontal: 16,
+  //                         vertical: 8,
+  //                       ),
+  //                       decoration: BoxDecoration(
+  //                         borderRadius: BorderRadius.circular(50),
+  //                         color: Colors.grey[100],
+  //                         border: Border.all(color: Colors.black12),
+  //                       ),
+  //                       child: const Text(
+  //                         "Hello! 👋",
+  //                         style: TextStyle(
+  //                           fontWeight: FontWeight.w500,
+  //                           fontSize: 16,
+  //                         ),
+  //                       ),
+  //                     ),
+  //                     const SizedBox(height: 20),
+  //                     Column(
+  //                       children: [
+  //                         Text.rich(
+  //                           TextSpan(
+  //                             text: "I'm ",
+  //                             style: TextStyle(
+  //                               fontSize: 70,
+  //                               fontWeight: FontWeight.w700,
+  //                               color: AppColors.buttonColorLight,
+  //                               height: 0.9, // Reduce line height
+  //                             ),
+  //                             children: [
+  //                               TextSpan(
+  //                                 text: "Habeeb",
+  //                                 style: TextStyle(
+  //                                   fontSize: 70,
+  //                                   color: AppColors.titleColor,
+  //                                   fontWeight: FontWeight.w800,
+  //                                   height: 0.9, // Reduce line height
+  //                                 ),
+  //                               ),
+  //                             ],
+  //                           ),
+  //                         ),
+  //                         const SizedBox(height: 8), // Control the spacing manually
+  //                         Text(
+  //                           "Flutter Developer",
+  //                           style: TextStyle(
+  //                             fontSize: 60,
+  //                             fontWeight: FontWeight.w800,
+  //                             color: AppColors.buttonColorLight,
+  //                             height: 1, // Reduce line height
+  //                           ),
+  //                         ),
+  //                       ],
+  //                     ),                    ],
+  //                 ),
+  //               ),
+  //
+  //
+  //               Positioned(
+  //                 bottom: 0,
+  //                 child: Image.asset(
+  //                   'assets/images/header2.png',
+  //                   height: 400,
+  //                   width: 400,
+  //                 ),
+  //               ),
+  //
+  //               // Text content
+  //             ],
+  //           ),
+  //         ),
+  //
+  //         // Right side stats
+  //         Flexible(
+  //           child: Column(
+  //             mainAxisAlignment: MainAxisAlignment.center,
+  //             children: [
+  //               Text(
+  //                 "3.5+",
+  //                 style: TextStyle(
+  //                   fontSize: isMobile ? 32 : 48,
+  //                   fontWeight: FontWeight.bold,
+  //                   color: AppColors.titleColor,
+  //                 ),
+  //               ),
+  //               Text(
+  //                 "Years Experience",
+  //                 style: TextStyle(
+  //                   fontSize: isMobile ? 14 : 16,
+  //                   color: AppColors.buttonColorLight,
+  //                   fontWeight: FontWeight.w500,
+  //                 ),
+  //                 textAlign: TextAlign.center,
+  //               ),
+  //             ],
+  //           ),
+  //         ),
+  //       ],
+  //     ),
+  //   );  }
 
-    return Container(
-      height: size.height,
-      padding: UIHelpers.sectionPadding(isMobile),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Expanded(
-            child: AnimatedSection(
-              delay: 200,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Hi, I\'m Habeeb',
-                    style: UIHelpers.displayLarge(context, isMobile: isMobile),
-                  ),
-                  UIHelpers.verticalSpace(size.height * .01),
-                  appShaderMask(context: context,
-                      text: "Front-End Developer", ),
-                  UIHelpers.verticalSpace(size.height * .01),
-                  SizedBox(
-                    width: isMobile ? size.width : size.width * .5,
-                    child: Text(
-                      'I create elegant, responsive cross-platform applications '
-                          'using Flutter with focus on performance and user experience.',
-                      style: UIHelpers.bodyLarge(context, isMobile: isMobile),
-                      textAlign: isMobile ? TextAlign.center : TextAlign.left,
-                    ),
-                  ),
-                  UIHelpers.verticalSpace(size.height * .05),
-                  if (!isMobile)
-                    ElevatedButton(
-                      onPressed: () => _scrollToSection('About'),
-                      style: UIHelpers.elevatedButtonStyle(),
-                      child: const Text('About Me'),
-                    ),
-                ],
-              ),
-            ),
-          ),
-          if (!isMobile)
-            Expanded(
-              child: AnimatedSection(
-                delay: 400,
-                child: Container(
-                  margin: EdgeInsets.only(right: size.height * .01),
-                  child: CircleAvatar(
-                    radius: size.width * .12,
-                    backgroundColor: Colors.blue.shade100,
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(size.width * .12),
-                      child: Image.asset(
-                        'assets/images/header.jpg',
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            ),
-        ],
-      ),
-    );
+  Widget _buildHeroSection(bool isMobile, BuildContext context) {
+    return AnimatedHeroSection(isMobile: false,);
   }
+
 
   Widget _buildMobileHero(BuildContext context) {
     final size = context.viewSize;
@@ -252,16 +378,19 @@ class _HomePageState extends State<HomePage> {
                     textAlign: TextAlign.center,
                   ),
                   UIHelpers.verticalSpace(8),
-                  Center(child: appShaderMask(
+                  Center(
+                    child: appShaderMask(
                       context: context,
                       text: "Front-End Developer",
-                      fontSize : context.viewSize.height*.04)),
+                      fontSize: context.viewSize.height * .04,
+                    ),
+                  ),
                   UIHelpers.verticalSpace(16),
                   UIHelpers.verticalSpace(24),
 
                   Text(
                     'I create elegant, responsive cross-platform applications '
-                        'using Flutter with focus on performance and user experience.',
+                    'using Flutter with focus on performance and user experience.',
                     style: context.textTheme.bodyMedium?.copyWith(
                       color: Colors.white70,
                       fontSize: 16,
@@ -278,8 +407,6 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
           ),
-
-
         ],
       ),
     );
@@ -299,13 +426,15 @@ class _HomePageState extends State<HomePage> {
           UIHelpers.verticalSpace(40),
           Text(
             "I am a passionate Flutter developer with expertise in building beautiful, high-performance cross-platform applications. I love creating intuitive user experiences and solving complex problems. With experience in various state management solutions and REST APIs, I deliver robust and scalable applications that provide excellent user experiences."
-                "I am proficient in integrating third-party APIs, Firebase services, and local databases, ensuring seamless app functionality. I continuously explore new technologies, tools, and best practices to keep my applications modern and efficient."
-                "I take pride in writing clean, maintainable code and following industry-standard architecture patterns. My focus is on delivering apps that not only meet business requirements but also delight users with smooth interactions and responsive design."
-                "Collaboration is one of my strengths; I enjoy working closely with designers, backend developers, and stakeholders to bring ideas to life. My goal is to contribute to impactful projects while constantly learning and growing as a software developer.",
-            style: isMobile ? context.textTheme.bodyMedium?.copyWith(
-              color: Colors.white70,
-              fontSize: 16,
-            ): UIHelpers.titleLarge(context),
+            "I am proficient in integrating third-party APIs, Firebase services, and local databases, ensuring seamless app functionality. I continuously explore new technologies, tools, and best practices to keep my applications modern and efficient."
+            "I take pride in writing clean, maintainable code and following industry-standard architecture patterns. My focus is on delivering apps that not only meet business requirements but also delight users with smooth interactions and responsive design."
+            "Collaboration is one of my strengths; I enjoy working closely with designers, backend developers, and stakeholders to bring ideas to life. My goal is to contribute to impactful projects while constantly learning and growing as a software developer.",
+            style: isMobile
+                ? context.textTheme.bodyMedium?.copyWith(
+                    color: AppColors.background1,
+                    fontSize: 16,
+                  )
+                : UIHelpers.titleLarge(context),
             textAlign: TextAlign.center,
           ),
           UIHelpers.verticalSpace(40),
@@ -324,19 +453,16 @@ class _HomePageState extends State<HomePage> {
       alignment: WrapAlignment.center,
       spacing: isMobile ? 8 : 16,
       runSpacing: 16,
-      children: List.generate(
-        _avatarData.length,
-            (index) {
-          final item = _avatarData[index];
-          return appCircleAvatar(
-            context,
-            null,
-            null,
-            isImage: item['isImage'] as bool,
-            value: item['value'] as String,
-          );
-        },
-      ),
+      children: List.generate(_avatarData.length, (index) {
+        final item = _avatarData[index];
+        return appCircleAvatar(
+          context,
+          null,
+          null,
+          isImage: item['isImage'] as bool,
+          value: item['value'] as String,
+        );
+      }),
     );
   }
 
@@ -351,11 +477,8 @@ class _HomePageState extends State<HomePage> {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          AnimatedSection(
-            delay: 200,
-            child: appShaderMask(context: context,
-                text: "Projects",),
-          ),
+          UIHelpers.sectionTitle(context, "Projects"),
+
           SizedBox(height: context.viewSize.height * .05),
           Expanded(
             child: Stack(

@@ -40,7 +40,7 @@ Widget appCircleAvatar(
     }) {
   return CircleAvatar(
     radius: radius ?? 28,
-    backgroundColor: AppColors.background1,
+    backgroundColor: AppColors.background2,
     child: CircleAvatar(
       radius: childRadius ?? 22,
       backgroundColor: Colors.transparent,

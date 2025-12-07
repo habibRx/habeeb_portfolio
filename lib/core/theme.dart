@@ -16,7 +16,7 @@ final appTheme = ThemeData(
       fontWeight: FontWeight.w600,
     ),
   ),
-  textTheme: GoogleFonts.josefinSansTextTheme(),
+  textTheme: GoogleFonts.poppinsTextTheme(),
   inputDecorationTheme: InputDecorationTheme(
     border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
     contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
