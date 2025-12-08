@@ -102,7 +102,7 @@ class _AnimatedHeroSectionState extends State<AnimatedHeroSection>
 
 
     return Container(
-      height: size.height,
+      height: !widget.isMobile ? size.height : size.height*0.8,
       width: size.width,
       padding: UIHelpers.sectionPadding(true),
       child: AnimatedBuilder(
@@ -114,6 +114,7 @@ class _AnimatedHeroSectionState extends State<AnimatedHeroSection>
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
+
                   /// LEFT STATS
                   Flexible(
                     child: Transform.translate(
@@ -170,8 +171,10 @@ class _AnimatedHeroSectionState extends State<AnimatedHeroSection>
                             ),
                           ),
                         ),
+
+
                         Positioned(
-                          top: size.height * 0.1,
+                          top: 0,
                           child: Transform.translate(
                             offset: Offset(0, 30 * (1 - _centerTextAnimation.value)),
                             child: Opacity(
@@ -201,6 +204,7 @@ class _AnimatedHeroSectionState extends State<AnimatedHeroSection>
                                       ),
                                     ),
                                   ),
+
                                   SizedBox(height: size.height * 0.03),
                                   Column(
                                     children: [
@@ -300,258 +304,6 @@ class _AnimatedHeroSectionState extends State<AnimatedHeroSection>
           );
         },
       ),
-    );
-  }
-}
-
-class MobileHeroSection extends StatefulWidget {
-  const MobileHeroSection({super.key});
-
-  @override
-  State<MobileHeroSection> createState() => _MobileHeroSectionState();
-}
-
-class _MobileHeroSectionState extends State<MobileHeroSection>
-    with SingleTickerProviderStateMixin {
-  late AnimationController _controller;
-  late Animation<double> _fadeAnimation;
-  late Animation<double> _slideUpAnimation;
-  late Animation<double> _scaleAnimation;
-
-  @override
-  void initState() {
-    super.initState();
-
-    _controller = AnimationController(
-      duration: const Duration(milliseconds: 1200),
-      vsync: this,
-    );
-
-    _fadeAnimation = Tween<double>(begin: 0, end: 1).animate(
-      CurvedAnimation(
-        parent: _controller,
-        curve: const Interval(0.0, 0.5, curve: Curves.easeOut),
-      ),
-    );
-
-    _slideUpAnimation = Tween<double>(begin: 30, end: 0).animate(
-      CurvedAnimation(
-        parent: _controller,
-        curve: const Interval(0.2, 0.7, curve: Curves.easeOut),
-      ),
-    );
-
-    _scaleAnimation = Tween<double>(begin: 0.8, end: 1).animate(
-      CurvedAnimation(
-        parent: _controller,
-        curve: const Interval(0.4, 1.0, curve: Curves.easeOutBack),
-      ),
-    );
-
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _controller.forward();
-    });
-  }
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
-    final isSmallMobile = size.height < 700;
-
-    return Container(
-      height: size.height,
-      width: size.width,
-      padding: const EdgeInsets.symmetric(horizontal: 20),
-      child: AnimatedBuilder(
-        animation: _controller,
-        builder: (context, child) {
-          return Stack(
-            alignment: Alignment.center,
-            children: [
-              Positioned(
-                bottom: size.height * 0.1,
-                child: Transform.scale(
-                  scale: _scaleAnimation.value,
-                  child: Container(
-                    width: size.width * 0.8,
-                    height: size.height * 0.3,
-                    decoration: BoxDecoration(
-                      color: AppColors.buttonColorLight,
-                      borderRadius: BorderRadius.circular(200),
-                    ),
-                  ),
-                ),
-              ),
-
-              // Main content
-              Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  // Bubble
-                  Transform.translate(
-                    offset: Offset(0, _slideUpAnimation.value),
-                    child: Opacity(
-                      opacity: _fadeAnimation.value,
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 20,
-                          vertical: 10,
-                        ),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(50),
-                          color: Colors.grey[100],
-                          border: Border.all(color: Colors.black12),
-                        ),
-                        child: Text(
-                          "Hello! 👋",
-                          style: TextStyle(
-                            fontWeight: FontWeight.w500,
-                            fontSize: isSmallMobile ? 14 : 16,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-
-                  SizedBox(height: size.height * 0.03),
-
-                  // Name
-                  Transform.translate(
-                    offset: Offset(0, _slideUpAnimation.value),
-                    child: Opacity(
-                      opacity: _fadeAnimation.value,
-                      child: Text.rich(
-                        TextSpan(
-                          text: "I'm ",
-                          style: TextStyle(
-                            fontSize: isSmallMobile ? size.height * 0.05 : size.height * 0.06,
-                            fontWeight: FontWeight.w700,
-                            color: AppColors.buttonColorLight,
-                            height: 0.9,
-                          ),
-                          children: [
-                            TextSpan(
-                              text: "Habeeb",
-                              style: TextStyle(
-                                fontSize: isSmallMobile ? size.height * 0.05 : size.height * 0.06,
-                                color: AppColors.titleColor,
-                                fontWeight: FontWeight.w800,
-                                height: 0.9,
-                              ),
-                            ),
-                          ],
-                        ),
-                        textAlign: TextAlign.center,
-                      ),
-                    ),
-                  ),
-
-                  SizedBox(height: size.height * 0.01),
-
-                  // Title
-                  Transform.translate(
-                    offset: Offset(0, _slideUpAnimation.value),
-                    child: Opacity(
-                      opacity: _fadeAnimation.value,
-                      child: Text(
-                        "Flutter Developer",
-                        style: TextStyle(
-                          fontSize: isSmallMobile ? size.height * 0.04 : size.height * 0.05,
-                          fontWeight: FontWeight.w800,
-                          color: AppColors.buttonColorLight,
-                          height: 1,
-                        ),
-                        textAlign: TextAlign.center,
-                      ),
-                    ),
-                  ),
-
-                  SizedBox(height: size.height * 0.04),
-
-                  // Stats Row
-                  Opacity(
-                    opacity: _fadeAnimation.value,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        _buildStatItem(
-                          value: "5+",
-                          label: "Projects\nCompleted",
-                          size: size,
-                          isSmallMobile: isSmallMobile,
-                        ),
-                        _buildStatItem(
-                          value: "3.5+",
-                          label: "Years\nExperience",
-                          size: size,
-                          isSmallMobile: isSmallMobile,
-                        ),
-                      ],
-                    ),
-                  ),
-
-                  SizedBox(height: size.height * 0.04),
-
-                  // Image
-                ],
-              ),
-              
-              Positioned(
-                bottom: size.height * 0.1,
-                child: Transform.translate(
-                offset: Offset(0, _slideUpAnimation.value * 2),
-                child: Opacity(
-                  opacity: _fadeAnimation.value,
-                  child: Image.asset(
-                    'assets/images/header2.png',
-                    height: isSmallMobile ? size.height * 0.3 : size.height * 0.3,
-                    fit: BoxFit.contain,
-                  ),
-                ),
-              ),
-              )
-            ],
-          );
-        },
-      ),
-    );
-  }
-
-  Widget _buildStatItem({
-    required String value,
-    required String label,
-    required Size size,
-    required bool isSmallMobile,
-  }) {
-    return Column(
-      children: [
-        Text(
-          value,
-          style: TextStyle(
-            fontSize: isSmallMobile ? size.height * 0.05 : size.height * 0.06,
-            fontWeight: FontWeight.bold,
-            color: AppColors.titleColor,
-          ),
-        ),
-        SizedBox(height: 4),
-        Text(
-          label,
-          style: TextStyle(
-            fontSize: isSmallMobile ? 12 : 14,
-            color: AppColors.buttonColorLight,
-            fontWeight: FontWeight.w500,
-            height: 1.2,
-          ),
-          textAlign: TextAlign.center,
-        ),
-      ],
     );
   }
 }

@@ -2,6 +2,51 @@ import 'package:flutter/material.dart';
 import 'package:habeeb_portfolio/core/colors.dart';
 import 'package:habeeb_portfolio/widgets/extension.dart';
 
+
+List<Map<String, Object>>  avatarData = [
+  {"isImage": true, "value": "assets/images/flutter.png"},
+  {"isImage": true, "value": "assets/images/firebase.png"},
+  {"isImage": true, "value": "assets/images/graphql.png"},
+  {"isImage": true, "value": "assets/images/rest.jpg"},
+  {"isImage": false, "value": "OpenAI"},
+  {"isImage": true, "value": "assets/images/mvvm.png"},
+  {"isImage": true, "value": "assets/images/github.jpg"},
+  {"isImage": false, "value": "Web3"},
+  {"isImage": false, "value": "Wallet"},
+];
+
+List<Map<String, Object>>  projects = [
+  {
+    "link": "https://ecomoto-mu.vercel.app",
+    "name": "ECOMOTO",
+    "image": "assets/images/ecomoto.png",
+    "description":
+    "A peer-to-peer EV rental marketplace with integrated social features, enabling users to rent electric vehicles, connect with owners, and engage through real-time chat and community interactions.",
+  },
+  {
+    "link":
+    "https://play.google.com/store/apps/details?id=com.orokii.app&hl=en&gl=US",
+    "name": "OROKII",
+    "image": "assets/images/orokii.png",
+    "description":
+    "A decentralized finance platform focused on enabling fast, secure, and borderless crypto transactions with minimal fees.",
+  },
+  {
+    "link": "https://ecomoto-mu.vercel.app",
+    "name": "ECOBOOK",
+    "image": "assets/images/ecomoto.png",
+    "description":
+    "A social platform built to connect eco-conscious individuals and businesses through blogs, events, and community discussions.",
+  },
+  {
+    "link": "",
+    "name": "What's My PNL",
+    "image": "assets/images/whatpnl.jpg",
+    "description":
+    "A comprehensive trading journal that helps traders record, analyze, and optimize their performance with built-in brokerage and gain calculators, insightful reports, and smart trade tracking tools.",
+  },
+];
+
 ShaderMask appShaderMask({
   required BuildContext context,
   required String text,
@@ -67,4 +112,5 @@ Widget appCircleAvatar(
   );
 
 }
+
 

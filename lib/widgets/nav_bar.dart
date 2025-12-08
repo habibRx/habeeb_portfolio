@@ -44,12 +44,8 @@ class NavBar extends StatelessWidget {
         ),
 
 
-DownloadResumeButton()     ,    // appCircleAvatar
-         //   (context,
-         //     15,
-         //     20,
-         //     isImage: true,
-         //     value: "assets/images/header.jpg"),
+DownloadResumeButton()     ,
+
          Row(
            children: [
              _NavItem(title: 'Experience', onTap: () => onSectionTap('Experience')),
@@ -86,6 +82,18 @@ DownloadResumeButton()     ,    // appCircleAvatar
                 Navigator.pop(context);
                 onSectionTap('Home');
               }),
+              _MobileNavItem(title: 'Services', onTap: () {
+                Navigator.pop(context);
+                onSectionTap('Services');
+              }),
+
+              _MobileNavItem(title: 'Experience', onTap: () {
+                Navigator.pop(context);
+                onSectionTap('Experience');
+              }),
+
+              DownloadResumeButton()     ,
+
               _MobileNavItem(title: 'About', onTap: () {
                 Navigator.pop(context);
                 onSectionTap('About');
@@ -98,6 +106,8 @@ DownloadResumeButton()     ,    // appCircleAvatar
                 Navigator.pop(context);
                 onSectionTap('Contact');
               }),
+
+              SizedBox(height: 20,)
             ],
           ),
         );

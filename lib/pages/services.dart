@@ -3,16 +3,25 @@ import 'package:habeeb_portfolio/widgets/extension.dart';
 
 import '../core/colors.dart';
 
+
 class ServicesSection extends StatelessWidget {
-  const ServicesSection({super.key});
+  final bool isMobile;
+
+  const ServicesSection({
+    super.key,
+    required this.isMobile,
+  });
 
   @override
   Widget build(BuildContext context) {
+    return !isMobile ? _buildDesktopLayout(context) : _buildMobileLayout(context);
+  }
 
+  // DESKTOP LAYOUT
+  Widget _buildDesktopLayout(BuildContext context) {
     return Container(
       height: context.viewSize.height,
       padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 80),
-      // color: Colors.white,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -26,11 +35,11 @@ class ServicesSection extends StatelessWidget {
               color: AppColors.titleColor,
             ),
           ),
-          SizedBox(height: context.viewSize.height*.025,),
+          SizedBox(height: context.viewSize.height * .025),
 
           // Description
-           Padding(
-            padding: EdgeInsets.symmetric(horizontal: context.viewSize.width*.20),
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: context.viewSize.width * .20),
             child: Text(
               "I build high-quality, cross-platform mobile applications for Android and iOS using Flutter — optimized for performance, scalability, and beautiful UI/UX.",
               textAlign: TextAlign.center,
@@ -42,8 +51,9 @@ class ServicesSection extends StatelessWidget {
             ),
           ),
 
-          SizedBox(height: context.viewSize.height*.05,),
-          // Services Cards
+          SizedBox(height: context.viewSize.height * .05),
+
+          // Services Cards - Horizontal Row for Desktop
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -51,33 +61,115 @@ class ServicesSection extends StatelessWidget {
                 context: context,
                 title: "Full-Stack App Development (Firebase)",
                 description: "From authentication to analytics, I can handle your complete app backend using Firebase — including Firestore, Cloud Functions, Storage, Notifications, and Hosting.",
+                width: context.viewSize.width * .20,
+                height: context.viewSize.height * .50,
               ),
               const SizedBox(width: 30),
               _buildServiceCard(
                 context: context,
                 title: "API Integration & Development",
                 description: "Seamless integration with REST and GraphQL APIs — I ensure smooth communication between your app and backend systems.",
+                width: context.viewSize.width * .20,
+                height: context.viewSize.height * .50,
               ),
               const SizedBox(width: 30),
               _buildServiceCard(
                 context: context,
                 title: "Custom Features & App Maintenance",
                 description: "I develop advanced, production-ready features like real-time updates, charts, authentication flows, payments, and admin dashboards — and provide continuous updates or optimizations.",
+                width: context.viewSize.width * .20,
+                height: context.viewSize.height * .50,
               ),
             ],
           ),
-
-
         ],
       ),
     );
   }
 
-  Widget _buildServiceCard({required String title, required BuildContext context,  required String description}) {
+  // MOBILE LAYOUT
+  Widget _buildMobileLayout(BuildContext context) {
     return Container(
-      width: context.viewSize.width * .20,
-      height: context.viewSize.height*.50,
-      padding: const EdgeInsets.all(32),
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 40),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          // Title
+          Text(
+            "My Services",
+            style: TextStyle(
+              fontSize: context.viewSize.width*0.1,
+              fontWeight: FontWeight.bold,
+              color: AppColors.titleColor,
+            ),
+          ),
+          const SizedBox(height: 16),
+
+          // Description
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: Text(
+              "I build high-quality, cross-platform mobile applications for Android and iOS using Flutter — optimized for performance, scalability, and beautiful UI/UX.",
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: 14,
+                color: AppColors.buttonColorLight,
+                height: 1.5,
+              ),
+            ),
+          ),
+
+          const SizedBox(height: 32),
+
+          // Services Cards - Vertical Column for Mobile
+          Column(
+            children: [
+              _buildServiceCard(
+                context: context,
+                title: "Full-Stack App Development (Firebase)",
+                description: "From authentication to analytics, I can handle your complete app backend using Firebase — including Firestore, Cloud Functions, Storage, Notifications, and Hosting.",
+                width: double.infinity,
+                height: null,
+                isMobile: true,
+              ),
+              const SizedBox(height: 20),
+              _buildServiceCard(
+                context: context,
+                title: "API Integration & Development",
+                description: "Seamless integration with REST and GraphQL APIs — I ensure smooth communication between your app and backend systems.",
+                width: double.infinity,
+                height: null,
+                isMobile: true,
+              ),
+              const SizedBox(height: 20),
+              _buildServiceCard(
+                context: context,
+                title: "Custom Features & App Maintenance",
+                description: "I develop advanced, production-ready features like real-time updates, charts, authentication flows, payments, and admin dashboards — and provide continuous updates or optimizations.",
+                width: double.infinity,
+                height: null,
+                isMobile: true,
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildServiceCard({
+    required BuildContext context,
+    required String title,
+    required String description,
+    required double width,
+    double? height,
+    bool isMobile = false,
+  }) {
+    return Container(
+      width: width,
+      height: height,
+      padding: isMobile ? const EdgeInsets.all(24) : const EdgeInsets.all(32),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(12),
@@ -96,7 +188,6 @@ class ServicesSection extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-
           Container(
             width: 40,
             height: 40,
@@ -111,25 +202,25 @@ class ServicesSection extends StatelessWidget {
             ),
           ),
 
-          const SizedBox(height: 20),
+          SizedBox(height: isMobile ? 16 : 20),
 
           // Title
           Text(
             title,
-            style: const TextStyle(
-              fontSize: 20,
+            style: TextStyle(
+              fontSize: isMobile ? 18 : 20,
               fontWeight: FontWeight.bold,
               color: Colors.black,
             ),
           ),
 
-          const SizedBox(height: 12),
+          SizedBox(height: isMobile ? 8 : 12),
 
           // Description
           Text(
             description,
             style: TextStyle(
-              fontSize: 14,
+              fontSize: isMobile ? 13 : 14,
               color: Colors.grey[600],
               height: 1.5,
             ),
@@ -138,5 +229,4 @@ class ServicesSection extends StatelessWidget {
       ),
     );
   }
-
 }

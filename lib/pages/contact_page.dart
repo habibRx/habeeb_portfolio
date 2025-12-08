@@ -41,9 +41,9 @@ class _ContactPageState extends State<ContactPage> {
   }
 
 
-  final String? _userId = dotenv.env['USER_ID'];
-  final String? _serviceId = dotenv.env['SERVICE_ID'];
-  final String? _templateId = dotenv.env['TEMPLATE_ID'];
+  final String? _userId = "oQcXijKEszsjzPTaG";
+  final String? _serviceId = "service_yd4psdx";
+  final String? _templateId = "template_1llj3gf";
 
   Future<void> _sendEmail() async {
     if (_formKey.currentState!.validate()) {
@@ -52,7 +52,7 @@ class _ContactPageState extends State<ContactPage> {
       });
 
       try {
-        print(_userId);
+        print('xxxxxxx');
         final response = await http.post(
           Uri.parse('https://api.emailjs.com/api/v1.0/email/send'),
           headers: {
@@ -71,6 +71,7 @@ class _ContactPageState extends State<ContactPage> {
           }),
         );
 
+        print("ddddddd ${response.body}");
         if (response.statusCode == 200) {
           _showSnackBar('Message sent successfully!');
           _clearForm();
