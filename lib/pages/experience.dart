@@ -113,7 +113,7 @@ class WorkExperienceScreen extends StatelessWidget {
                 company: 'ECOMOTO LLC',
                 period: 'Jan 2023 - Aug 2025',
                 role: 'Software Engineer - Mobile',
-                isLast: true,
+                isLast: false,
                 description: 'Developed and maintained EV rental marketplace application. '
                     'Focused on building clean UIs, integrating REST APIs, GraphQL and Firebase, and optimizing app performance for smooth user experience. Collaborated closely with designers and backend teams to deliver scalable and production-ready mobile solutions.',
               ),
