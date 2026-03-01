@@ -5,6 +5,7 @@ import 'package:habeeb_portfolio/widgets/extension.dart';
 
 List<Map<String, Object>>  avatarData = [
   {"isImage": true, "value": "assets/images/flutter.png"},
+  {"isImage": false, "value": "Kotlin"},
   {"isImage": true, "value": "assets/images/firebase.png"},
   {"isImage": true, "value": "assets/images/graphql.png"},
   {"isImage": true, "value": "assets/images/rest.jpg"},

@@ -151,7 +151,7 @@ class _HomePageState extends State<HomePage> {
           ),
            if (!isMobile)UIHelpers.verticalSpace(40),
           Text(
-            "I am a passionate Flutter developer with expertise in building beautiful, high-performance cross-platform applications. I love creating intuitive user experiences and solving complex problems. With experience in various state management solutions and REST APIs, I deliver robust and scalable applications that provide excellent user experiences."
+            "I am a passionate Mobile application developer with expertise in building beautiful, high-performance cross-platform applications. I love creating intuitive user experiences and solving complex problems. With experience in various state management solutions and REST APIs, I deliver robust and scalable applications that provide excellent user experiences."
             "I am proficient in integrating third-party APIs, Firebase services, and local databases, ensuring seamless app functionality. I continuously explore new technologies, tools, and best practices to keep my applications modern and efficient."
             "I take pride in writing clean, maintainable code and following industry-standard architecture patterns. My focus is on delivering apps that not only meet business requirements but also delight users with smooth interactions and responsive design."
             "Collaboration is one of my strengths; I enjoy working closely with designers, backend developers, and stakeholders to bring ideas to life. My goal is to contribute to impactful projects while constantly learning and growing as a software developer.",

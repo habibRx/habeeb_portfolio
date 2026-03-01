@@ -91,7 +91,7 @@ class _AnimatedHeroSectionState extends State<AnimatedHeroSection>
     final double subHeadingMobile = size.height * 0.04;
     final double mobileLabel = size.height * 0.01;
     final double headingSize = size.height * 0.1;
-    final double subHeadingSize = size.height * 0.08;
+    final double subHeadingSize = size.height * 0.06;
     final double statValueSizeMobile = size.height * 0.04;
     final double statValueSize = size.height * 0.06;
     final double statLabelSize = size.height * 0.02;
@@ -232,7 +232,7 @@ class _AnimatedHeroSectionState extends State<AnimatedHeroSection>
                                       ),
                                       SizedBox(height: size.height * 0.01),
                                       Text(
-                                        "Flutter Developer",
+                                        "Mobile Application Developer",
                                         style: TextStyle(
                                           fontSize: !widget.isMobile ? subHeadingSize : subHeadingMobile,
                                           fontWeight: FontWeight.w800,
@@ -277,7 +277,7 @@ class _AnimatedHeroSectionState extends State<AnimatedHeroSection>
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Text(
-                              "3.5+",
+                              "3.7+",
                               style: TextStyle(
                                 fontSize: !widget.isMobile ? statValueSize : statValueSizeMobile,
                                 fontWeight: FontWeight.bold,

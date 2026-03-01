@@ -49,11 +49,20 @@ class WorkExperienceScreen extends StatelessWidget {
                 context: context,
                 company: 'ECOMOTO LLC',
                 period: 'Jan 2023 - Aug 2025',
-                role: 'Software Engineer - Flutter',
-                isLast: true,
+                role: 'Software Engineer - Mobile',
+                isLast: false,
                 description: 'Developed and maintained EV rental marketplace application. '
                     'Focused on building clean UIs, integrating REST APIs, GraphQL and Firebase, and optimizing app performance for smooth user experience. Collaborated closely with designers and backend teams to deliver scalable and production-ready mobile solutions.',
               ),
+
+              _buildTimelineItemDesktop(
+                context: context,
+                company: 'WMPNL Project',
+                period: 'Oct 2025 - Jan 2026',
+                role: 'Full Stack Developer',
+                isLast: true,
+                description: 'Developed and scaled WhatsMyPnL, a trading journal and P&L analytics application designed for retail traders. Implemented advanced trade tracking, performance reports, CSV export generation, and detailed profit/loss analytics with visual insights. Integrated Firebase (Auth, Firestore, Storage) for secure user management and real-time data sync. Built compound growth simulation logic, trade categorization, and risk-reward analytics for disciplined trading evaluation. Optimized app architecture using BLoC for predictable state management and ensured smooth performance for high-frequency trade data handling.',
+              )
             ],
           ),
         ],
@@ -103,12 +112,20 @@ class WorkExperienceScreen extends StatelessWidget {
                 context: context,
                 company: 'ECOMOTO LLC',
                 period: 'Jan 2023 - Aug 2025',
-                role: 'Software Engineer - Flutter',
+                role: 'Software Engineer - Mobile',
                 isLast: true,
                 description: 'Developed and maintained EV rental marketplace application. '
                     'Focused on building clean UIs, integrating REST APIs, GraphQL and Firebase, and optimizing app performance for smooth user experience. Collaborated closely with designers and backend teams to deliver scalable and production-ready mobile solutions.',
               ),
-            ],
+
+              _buildTimelineItemMobile(
+                context: context,
+                company: 'WMPNL Project',
+                period: 'Oct 2025 - Jan 2026',
+                role: 'Full Stack Developer',
+                isLast: true,
+                description: 'Developed and scaled WhatsMyPnL, a trading journal and P&L analytics application designed for retail traders. Implemented advanced trade tracking, performance reports, CSV export generation, and detailed profit/loss analytics with visual insights. Integrated Firebase (Auth, Firestore, Storage) for secure user management and real-time data sync. Built compound growth simulation logic, trade categorization, and risk-reward analytics for disciplined trading evaluation. Optimized app architecture using BLoC for predictable state management and ensured smooth performance for high-frequency trade data handling.',
+              ) ],
           ),
         ],
       ),
