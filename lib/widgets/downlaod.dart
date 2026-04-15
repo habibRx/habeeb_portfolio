@@ -11,7 +11,7 @@ class DownloadResumeButton extends StatefulWidget {
 class _DownloadResumeButtonState extends State<DownloadResumeButton> {
   bool _isDownloading = false;
 
-  static const String _driveFileId = '1DJhlEMOXs8zqHdIhZpipPMQrQF4StWKm';
+  static const String _driveFileId = '1YgkelHR--ahDE-YEg-MmUo1RIErn3zIJ';
 
   String get _directDownloadUrl =>
       'https://drive.google.com/uc?export=download&id=$_driveFileId';
